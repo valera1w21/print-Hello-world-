@@ -17,10 +17,37 @@
         .btn-toggle { background: #007bff; }
         .btn-toggle-undone { background: #6c757d; }
         .btn-delete { background: #dc3545; }
+
+        /* ДОБАВЛЕНО: Стили для сеток карточек дашборда */
+        .dashboard { display: flex; gap: 10px; margin-bottom: 20px; justify-content: space-between; }
+        .card { flex: 1; padding: 10px; background: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card h4 { margin: 0 0 5px 0; font-size: 14px; color: #666; }
+        .card p { margin: 0; font-size: 22px; font-weight: bold; color: #222; }
+        
+        /* Специфические цветные рамки сверху для визуального разделения */
+        .card.total { border-top: 4px solid #007bff; }
+        .card.completed { border-top: 4px solid #28a745; }
+        .card.open { border-top: 4px solid #ffc107; }
     </style>
 </head>
 <body>
     <h2>רשימת המשימות שלי (מתוך MySQL ב-Docker)</h2>
+    
+    <div class="dashboard">
+        <div class="card total">
+            <h4>סך הכל</h4>
+            <p>{{ total_tasks }}</p>
+        </div>
+        <div class="card completed">
+            <h4>בוצעו</h4>
+            <p>{{ completed_tasks }}</p>
+        </div>
+        <div class="card open">
+            <h4>פתוחות</h4>
+            <p>{{ open_tasks }}</p>
+        </div>
+    </div>
+
     <form method="POST">
         {% csrf_token %}
         <input type="text" name="title" placeholder="הקלידו משימה חדשה..." required>
