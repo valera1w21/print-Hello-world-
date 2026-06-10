@@ -8,7 +8,15 @@
         input[type="text"] { padding: 10px; width: 70%; font-size: 16px; }
         button { padding: 10px; font-size: 16px; cursor: pointer; }
         ul { list-style-type: none; padding: 0; text-align: right; margin-top: 20px; }
-        li { padding: 12px; border-bottom: 1px solid #ccc; background: #fafafa; margin-bottom: 5px; }
+        li { padding: 12px; border-bottom: 1px solid #ccc; background: #fafafa; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
+        
+        li.completed { background: #e9ecef; color: #6c757d; text-decoration: line-through; }
+        li.completed small { color: #6c757d; text-decoration: line-through; }
+        .btn-group { display: flex; gap: 5px; }
+        .btn { padding: 5px 10px; font-size: 14px; text-decoration: none; border-radius: 3px; color: white; display: inline-block; }
+        .btn-toggle { background: #007bff; }
+        .btn-toggle-undone { background: #6c757d; }
+        .btn-delete { background: #dc3545; }
     </style>
 </head>
 <body>
@@ -20,7 +28,22 @@
     </form>
     <ul>
         {% for task in tasks %}
-            <li>{{ task.title }} <small>({{ task.created_at|date:"H:i" }})</small></li>
+            <li class="{% if task.completed %}completed{% endif %}">
+                <div>
+                    {{ task.title }} 
+                    <small>({{ task.created_at|date:"H:i" }})</small>
+                </div>
+                
+                <div class="btn-group">
+                    {% if task.completed %}
+                        <a href="{% url 'toggle_task' task.id %}" class="btn btn-toggle-undone">החזר</a>
+                    {% else %}
+                        <a href="{% url 'toggle_task' task.id %}" class="btn btn-toggle">בוצע</a>
+                    {% endif %}
+                    
+                    <a href="{% url 'delete_task' task.id %}" class="btn btn-delete">מחק</a>
+                </div>
+            </li>
         {% empty %}
             <li>אין משימות ברשימה כרגע.</li>
         {% endfor %}
