@@ -9,7 +9,20 @@ def task_list(request):
         return redirect('task_list')
 
     tasks = Task.objects.all().order_by('-created_at')
-    return render(request, 'todo/task_list.html', {'tasks': tasks})
+
+    total_tasks = Task.objects.count()
+    completed_tasks = Task.objects.filter(completed=True).count() 
+    open_tasks = Task.objects.filter(completed=False).count() 
+
+    context = {
+        'tasks': tasks,
+        'total_tasks': total_tasks,
+        'completed_tasks': completed_tasks,
+        'open_tasks': open_tasks,
+    }
+
+ 
+    return render(request, 'todo/task_list.html', context)
 
 
 def toggle_task(request, task_id):
